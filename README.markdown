@@ -1,7 +1,14 @@
 README
 ===============
 
-The ClassParser gets information about the classes defined in a file. The following info is parsed (using the example from sample.php):
+The ClassParser gets information about the classes (and their methods) defined in a file.
+Basic usage (taken from sample.php):
+
+    $cp = new ClassParser();
+    $cp->parse('sample.classes.php');
+    var_dump($cp->getClasses());
+
+The following info is parsed (using the example from sample.php):
 
     array(2) {
       ["Our"]=>
@@ -13,6 +20,8 @@ The ClassParser gets information about the classes defined in a file. The follow
           [0]=>
           string(8) "abstract"
         }
+        ["line"]=>
+        int(2) 11
         ["doc"]=>
         NULL
         ["functions"]=>
@@ -26,6 +35,8 @@ The ClassParser gets information about the classes defined in a file. The follow
               [1]=>
               string(8) "abstract"
             }
+            ["line"]=>
+            int(2) 12
             ["doc"]=>
             NULL
           }
@@ -40,6 +51,8 @@ The ClassParser gets information about the classes defined in a file. The follow
         ["modifiers"]=>
         array(0) {
         }
+        ["line"]=>
+        int(2) 21
         ["doc"]=>
         string(79) "/**
      * undocumented class
@@ -68,6 +81,8 @@ The ClassParser gets information about the classes defined in a file. The follow
               [0]=>
               string(7) "private"
             }
+            ["line"]=>
+            int(2) 22
             ["doc"]=>
             NULL
           }
@@ -78,6 +93,8 @@ The ClassParser gets information about the classes defined in a file. The follow
               [0]=>
               string(6) "public"
             }
+            ["line"]=>
+            int(2) 26
             ["doc"]=>
             NULL
           }
@@ -88,6 +105,8 @@ The ClassParser gets information about the classes defined in a file. The follow
               [0]=>
               string(6) "public"
             }
+            ["line"]=>
+            int(2) 37
             ["doc"]=>
             string(114) "/**
        * undocumented function
@@ -104,12 +123,34 @@ The ClassParser gets information about the classes defined in a file. The follow
               [0]=>
               string(6) "public"
             }
+            ["line"]=>
+            int(2) 41
             ["doc"]=>
             NULL
           }
+          ["randomStaticMethod"]=>
+          array(2) {
+            ["modifiers"]=>
+            array(1) {
+              [0]=>
+              string(6) "public"
+              [1]=>
+              string(6) "static"
+            }
+            ["line"]=>
+            int(2) 52
+            ["doc"]=>
+            string(114) "/**
+       * randomStaticMethod
+       *
+       * @param string $checkdata 
+       * @return boolean
+       * @author Dean Huczok
+       */"
+          }
         }
         ["file"]=>
-        string(59) "/Users/hugowett/Desktop/php-class-parser/sample.classes.php"
+        string(59) "/Users/deanhucz/Desktop/php-class-parser/sample.classes.php"
       }
     }
 
@@ -157,6 +198,18 @@ Was parsed from the following:
 
       public function r($gio) {
         return $gio;
+      }
+
+      /**
+       * randomStaticMethod
+       *
+       * @param string $checkdata
+       * @return boolean
+       * @author Dean Huczok
+       */
+      public static function randomStaticMethod($checkdata)
+      {
+          return true;
       }
     }
 

@@ -42,6 +42,7 @@ class ClassParser {
     $mod = array();
     $doc = NULL;
     $state = NULL;
+    $line = NULL;
 
     foreach ($tokens as $idx => &$token) {
       if (is_array($token)) {
@@ -51,6 +52,7 @@ class ClassParser {
             break;
           case T_PUBLIC:
           case T_PRIVATE:
+          case T_STATIC:
           case T_ABSTRACT:
           case T_PROTECTED:
             $mod[] = $token[1];
@@ -58,6 +60,7 @@ class ClassParser {
           case T_CLASS:
           case T_FUNCTION:
             $state = $token[0];
+            $line = $token[2];
             break;
           case T_EXTENDS:
           case T_IMPLEMENTS:
@@ -73,13 +76,13 @@ class ClassParser {
               case T_CLASS:
                 $state = self::STATE_CLASS_HEAD;
                 $si = $token[1];
-                $classes[] = array('name' => $token[1], 'modifiers' => $mod, 'doc' => $doc);
+                $classes[] = array('name' => $token[1], 'modifiers' => $mod, 'line' => $line, 'doc' => $doc);
                 break;
               case T_FUNCTION:
                 $state = self::STATE_FUNCTION_HEAD;
                 $clsc = count($classes);
                 if ($depth>0 && $clsc) {
-                  $classes[$clsc-1]['functions'][$token[1]] = array('modifiers' => $mod, 'doc' => $doc);
+                  $classes[$clsc-1]['functions'][$token[1]] = array('modifiers' => $mod, 'line' => $line, 'doc' => $doc);
                 }
                 break;
               case T_IMPLEMENTS:
